@@ -22,15 +22,16 @@ app = Flask(__name__)
 
 path = Path("path")
 classes = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
-data2 = ImageDataBunch.single_from_classes(path, classes, tfms=get_transforms(), size=224).normalize(imagenet_stats)
-learn = create_cnn(data2, models.resnet34)
-learn.load('r18_model_f.pth')
+
+data2 = ImageDataBunch.single_from_classes(path, classes, ds_tfms = get_transforms(), size = 224).normalize(imagenet_stats)
+
+learn = create_cnn(data2, models.resnet18)
+learn.load('r18_model_f')
 
 def model_predict(img_path):
     """
        model_predict will return the preprocessed image
     """
-   
     img = open_image(img_path)
     pred_class,pred_idx,outputs = learn.predict(img)
     return pred_class
