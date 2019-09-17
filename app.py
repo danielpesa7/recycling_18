@@ -6,8 +6,6 @@ import glob
 import re
 from pathlib import Path
 
-
-
 # Import fast.ai Library
 from fastai import *
 from fastai.vision import *
@@ -22,15 +20,11 @@ app = Flask(__name__)
 
 # Model saved with Keras model.save()
 
-
 path = Path("path")
 classes = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
 data2 = ImageDataBunch.single_from_classes(path, classes, tfms=get_transforms(), size=224).normalize(imagenet_stats)
 learn = create_cnn(data2, models.resnet34)
-learn.load('r50_model_f.pkl')
-
-
-
+learn.load('r18_model_f.pth')
 
 def model_predict(img_path):
     """
@@ -41,10 +35,7 @@ def model_predict(img_path):
     pred_class,pred_idx,outputs = learn.predict(img)
     return pred_class
     
-
-
-
-
+    
 @app.route('/', methods=['GET'])
 def index():
     # Main page
@@ -67,7 +58,6 @@ def upload():
         preds = model_predict(file_path)
         return preds
     return None
-
 
 if __name__ == '__main__':
     
